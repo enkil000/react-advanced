@@ -9,3 +9,9 @@
 .border-red {
 	border:2px solid red;
 }
+
+.shopping-cart {
+	position: fixed;
+	top: 0;
+	right: 0;
+}

@@ -1,52 +1,78 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ProductCard } from '../components/ProductCard'
 import { ProductButtons, ProductImage, ProductTitle } from '../components/'
 import { Product } from '../interfaces/interfaces'
 import '../styles/custom-styles.css'
 
-const products: Product[] = [
-	{
-		id: '1',
-		title: 'Coffee-Mug',
-		img: './coffee-mug.png'
-	},
-	{
-		id: '2',
-		title: 'Otra taza',
-		img: './coffee-mug.png'
-	},
-	{
-		id: '3',
-		title: 'Coffee-Mug Chunga ',
-	}
-]
+const producto1: Product = {
+	id: '1',
+	title: 'Coffee-Mug',
+	img: './coffee-mug.png'
+}
+const producto2: Product = {
+	id: '4',
+	title: 'Coffee-Mug Programador ',
+	img: './coffee-mug2.png'
+}
+
+const productos: Product[] = [producto1, producto2]
+
+interface ProductInCart extends Product { 
+	count: number
+}
 
 export const ShoppingPage = () => {
+
+	const [shoppingCart, setShoppingCart] = useState<{ [key: string]: ProductInCart }>({})
+	
+	const onProductCountChange = ({ count, product }: { count: number, product: Product }) => { 
+		// console.log('onProductCountChange', count, product )
+		setShoppingCart(oldShoppingCart => {
+			if (count === 0) { 
+				const { [product.id]: toDelete, ...rest } = oldShoppingCart
+				return rest
+			}
+			return {
+				...oldShoppingCart,
+				[product.id]:{...product, count}
+			}
+		} )
+	}
+
 	return (
-		<div style={{}}>
-			<h1>ShoppingPage</h1>
-			<hr />
-			<div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-				{products.map(product => (
-					<div key={product.id}>
-						<ProductCard product={product} key={product.id} className='bg-dark'>
-							<ProductImage className='border-red'/>
-							<ProductTitle className='text-red' style={{fontStyle: 'italic'}}/>
-							<ProductButtons className='text-red' style={{border:'1px solid red'}}/>
-						</ProductCard>
-						<ProductCard product={product} className='bg-dark'>
-							<ProductCard.Image className='border-red'/>
-							<ProductCard.Title className='text-red'/>
-							<ProductCard.Buttons className='text-red'/>
-						</ProductCard>
-						<ProductCard product={product} key={product.id} >
+		<>
+			<div style={{ width: '100%' }}>
+				<div className="shopping-cart">
+					{Object.entries(shoppingCart).map(([key, producto]) => (
+						<ProductCard product={producto} key={producto.id} style={{ width: '100px' }}
+							value={shoppingCart[producto.id]?.count || 0}
+							onChange={onProductCountChange}
+						>
 							<ProductImage />
-							<ProductTitle/>
-							<ProductButtons style={{border:'1px solid red'}}/>
+							<ProductButtons />
 						</ProductCard>
-					</div>
-				))}
+					))}
+				</div>
+
+				<h1>ShoppingPage</h1>
+				<hr />
+				<div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', width: '100%' }}>
+					{productos.map(product => (
+						<div key={product.id}>
+							<ProductCard product={product} key={product.id}
+								value={shoppingCart[product.id]?.count || 0}
+								onChange={(event) => onProductCountChange(event)}
+								>
+								<ProductImage />
+								<ProductTitle />
+								<ProductButtons />
+							</ProductCard>
+
+						</div>
+					))}
+				</div>
 			</div>
-		</div>
+			<hr />
+		</>
 	)
 }
