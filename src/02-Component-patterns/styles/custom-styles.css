@@ -1,0 +1,11 @@
+.bg-dark{
+	background-color: rgb(56,56,56);
+}
+
+.text-red {
+	color: red
+}
+
+.border-red {
+	border:2px solid red;
+}

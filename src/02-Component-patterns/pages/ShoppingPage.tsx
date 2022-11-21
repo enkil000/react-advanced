@@ -1,9 +1,8 @@
 import React from 'react'
 import { ProductCard } from '../components/ProductCard'
-import { ProductButtons } from '../components/ProductButtons'
-import { ProductImage } from '../components/ProductImage'
-import { ProductTitle } from '../components/ProductTitle'
+import { ProductButtons, ProductImage, ProductTitle } from '../components/'
 import { Product } from '../interfaces/interfaces'
+import '../styles/custom-styles.css'
 
 const products: Product[] = [
 	{
@@ -24,21 +23,26 @@ const products: Product[] = [
 
 export const ShoppingPage = () => {
 	return (
-		<div>
+		<div style={{}}>
 			<h1>ShoppingPage</h1>
 			<hr />
 			<div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
 				{products.map(product => (
 					<div key={product.id}>
-						<ProductCard product={product} key={product.id}>
-							<ProductImage />
-							<ProductTitle />
-							<ProductButtons />
+						<ProductCard product={product} key={product.id} className='bg-dark'>
+							<ProductImage className='border-red'/>
+							<ProductTitle className='text-red' style={{fontStyle: 'italic'}}/>
+							<ProductButtons className='text-red' style={{border:'1px solid red'}}/>
 						</ProductCard>
-						<ProductCard product={product} >
-							<ProductCard.Image />
-							<ProductCard.Title />
-							<ProductCard.Buttons />
+						<ProductCard product={product} className='bg-dark'>
+							<ProductCard.Image className='border-red'/>
+							<ProductCard.Title className='text-red'/>
+							<ProductCard.Buttons className='text-red'/>
+						</ProductCard>
+						<ProductCard product={product} key={product.id} >
+							<ProductImage />
+							<ProductTitle/>
+							<ProductButtons style={{border:'1px solid red'}}/>
 						</ProductCard>
 					</div>
 				))}
